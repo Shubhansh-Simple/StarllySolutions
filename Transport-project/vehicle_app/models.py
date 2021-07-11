@@ -28,7 +28,8 @@ class Vehicle( models.Model ):
     vehicle_number    = models.CharField( max_length=20,primary_key=True )
     gps_imei          = models.BigIntegerField( unique=True )
     license_start     = models.DateField()
-    license_end       = models.DateField()
+    license_end       = models.DateField( blank=True )
+
     vehicle_category  = models.CharField( choices=CATEGORIES, 
                                           max_length=9,
                                           default=CATEGORIES[0][0]
@@ -67,7 +68,7 @@ class Vehicle( models.Model ):
         super( Vehicle,self ).save( *args , **kwargs )
 
     def __str__(self):
-        return self.vehicle_number
+        return f'{self.vehicle_number} - {self.vehicle_owner}'
 
 
 

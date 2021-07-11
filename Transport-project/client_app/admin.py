@@ -1,14 +1,6 @@
-from django.contrib            import admin
-from django.contrib.auth.admin import UserAdmin
-
-from .forms  import ClientChangeForm , ClientCreationForm
+from django.contrib import admin
 from .models import Client
 
-class ClientAdmin( UserAdmin ):
-    add_form  = ClientCreationForm
-    form      = ClientChangeForm
-    model     = Client
-
-admin.site.register( Client,ClientAdmin )
+admin.site.register( Client )
 
 

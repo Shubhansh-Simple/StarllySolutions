@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',
 
-    # local
+    # local apps
     'client_app.apps.ClientAppConfig',
     'vehicle_app.apps.VehicleAppConfig',
     'permit_app.apps.PermitAppConfig',
@@ -126,7 +126,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-AUTH_USER_MODEL = 'client_app.Client'
 
 

@@ -2,7 +2,7 @@ from rest_framework            import status
 from rest_framework.decorators import api_view
 from rest_framework.response   import Response
 
-from permit_app.models  import  Permit
+from permit_app.models  import Permit
 from .serializer        import PermitSerializer
 
 @api_view( ['GET','POST'] )
