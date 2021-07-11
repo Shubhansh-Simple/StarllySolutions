@@ -12,5 +12,8 @@ class Client( AbstractUser ):
                                            unique=True,
                                            default=0 )
 
+    def __str__(self):
+        return self.username
+
     
 

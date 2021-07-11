@@ -8,6 +8,7 @@ class PracticeSerializer( serializers.ModelSerializer ):
         fields = '__all__'
 
 class VehicleSerializer ( serializers.ModelSerializer ):
+    vehicle_owner = serializers.StringRelatedField()
 
     class Meta:
         model  = Vehicle
