@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models   import Practice,Vehicle
+from .models   import Vehicle
 
-admin.site.register( Practice )
 admin.site.register( Vehicle )
 

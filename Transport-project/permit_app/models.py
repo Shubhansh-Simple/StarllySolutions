@@ -4,7 +4,9 @@ from vehicle_app.models import Vehicle
 class Permit( models.Model ):
     '''Vehicle's PERMIT to transport goods'''
 
-    vehicle         = models.ForeignKey( Vehicle, on_delete=models.DO_NOTHING )
+    vehicle         = models.ForeignKey( Vehicle, 
+                                         related_name='vechicle_permits',
+                                         on_delete=models.DO_NOTHING )
 
     permit_number   = models.CharField( max_length=20, unique=True )
     loading_point   = models.CharField( max_length=20 )

@@ -71,11 +71,3 @@ class Vehicle( models.Model ):
         return f'{self.vehicle_number} - {self.vehicle_owner}'
 
 
-
-class Practice( models.Model ):
-    first_name = models.CharField( max_length=10 )
-    last_name  = models.CharField( max_length=10 )
-
-    def __str__(self):
-        return f'{self.first_name.title()} {self.last_name}'
-
