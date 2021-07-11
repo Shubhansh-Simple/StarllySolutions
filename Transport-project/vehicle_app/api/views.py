@@ -2,8 +2,8 @@ from rest_framework            import status
 from rest_framework.decorators import api_view
 from rest_framework.response   import Response
 
-from vehicle_app.models import Practice
-from .serializer        import PracticeSerializer
+from vehicle_app.models import Practice, Vehicle
+from .serializer        import PracticeSerializer,VehicleSerializer
 
 @api_view( ['GET','POST'] )
 def Practice_list_create_view( request ):
@@ -25,6 +25,66 @@ def Practice_list_create_view( request ):
         else:
             return Response( serializer.errors, 
                              status=status.HTTP_400_BAD_REQUEST )
+
+
+@api_view( ['GET','POST'] )
+def VehicleListCreateView( request ):
+    '''Vehicle create/ list/ endpoints'''
+
+    if request.method == 'GET':
+
+        vehicle_data   = Vehicle.objects.all()
+        serialize_data = VehicleSerializer( vehicle_data, many=True )
+
+        return Response( serialize_data.data )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @api_view( ['GET', 'PUT', 'DELETE'] )
 def Practice_update_retrieve_delete_view( request, pk ):

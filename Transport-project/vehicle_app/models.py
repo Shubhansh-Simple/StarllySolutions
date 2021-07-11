@@ -1,5 +1,8 @@
-from django.db         import models
-from client_app.models import Client
+from django.db              import models
+from client_app.models      import Client
+from dateutil.relativedelta import relativedelta
+from datetime               import date 
+
 
 class Vehicle( models.Model ):
     '''VEHICLE details and licensing'''
@@ -22,9 +25,8 @@ class Vehicle( models.Model ):
                             'Renewal with existing hardware'  ),
                         )
 
-    vehicle_owner     = models.ForeignKey( Client, on_delete=models.PROTECT )
-    vehicle_number    = models.CharField( max_length=20 )
-    gps_imei          = models.BigIntegerField( default=0 )
+    vehicle_number    = models.CharField( max_length=20,primary_key=True )
+    gps_imei          = models.BigIntegerField( unique=True )
     license_start     = models.DateField()
     license_end       = models.DateField()
     vehicle_category  = models.CharField( choices=CATEGORIES, 
@@ -39,18 +41,34 @@ class Vehicle( models.Model ):
 
     installation_type = models.CharField( choices=INSTALLATION_TYPE, 
                                           max_length=30,
-                                          default=INSTALLATION_TYPE[0][0]
-                                        )
-    registration_date = models.DateField()
+                                          default=INSTALLATION_TYPE[0][0] )
 
+    registration_date = models.DateField()
+    vehicle_owner     = models.ForeignKey( Client, 
+                                           on_delete=models.PROTECT )
+
+    # before making any permits
     @property
     def license_status(self):
-        '''Weather the today's date is b/w the start and end date.'''
-        return True
+        '''Is today's date is b/w the start and end license date.'''
+
+        return self.license_start < date.today() < self.license_end
 
     @property
     def increase_permits(self):
         self.total_permits += 1
+
+    def save( self, *args , **kwargs ):
+        '''Auto filled license end date'''
+
+        if self._state.adding: # or self.license_start changed
+            self.license_end = self.license_start + relativedelta(years=1)
+
+        super( Vehicle,self ).save( *args , **kwargs )
+
+    def __str__(self):
+        return self.vehicle_number
+
 
 
 class Practice( models.Model ):

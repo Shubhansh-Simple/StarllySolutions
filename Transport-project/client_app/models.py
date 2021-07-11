@@ -7,6 +7,10 @@ from django.db                  import models
 
 
 class Client( AbstractUser ):
-    phone_number = models.BigIntegerField()
+    phone_number = models.BigIntegerField( primary_key=True, 
+                                           blank=True,
+                                           unique=True,
+                                           default=0 )
+
     
 
