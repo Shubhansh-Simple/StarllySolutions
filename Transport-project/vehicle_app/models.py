@@ -9,7 +9,7 @@ class Vehicle( models.Model ):
 
     CATEGORIES = ( 
                    ('DMG',  'DMG'),
-                   ('Stockyard',  'Stock-Yard'),
+                   ('Stockyard',  'Stockyard'),
                  )
 
     TYPE       = ( 

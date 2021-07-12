@@ -7,7 +7,9 @@ from .serializer        import VehicleSerializer,\
                                VehicleSerializerWithPermits,\
                                VehicleDetailSerializer
 
-
+#####################
+# /vehicle/permits/ #
+#####################
 @api_view( ['GET'] )
 def VehiclePermitListView( request ):
     '''All vehicles with their permits'''
@@ -18,6 +20,9 @@ def VehiclePermitListView( request ):
         return Response( serialize_data.data )
 
 
+#############
+# /vehicle/ #
+#############
 @api_view( ['GET','POST'] )
 def VehicleListCreateView( request ):
     '''Vehicle create/ list/ endpoints'''
@@ -43,6 +48,9 @@ def VehicleListCreateView( request ):
                          status=status.HTTP_400_BAD_REQUEST )
 
 
+######################
+# /vehicle/<int:pk>/ #
+######################
 @api_view( ['GET','PUT','DELETE'] )
 def VehicleDetailUpdateDeleteView( request,pk ):
 
@@ -57,84 +65,36 @@ def VehicleDetailUpdateDeleteView( request,pk ):
                          },
                          status=status.HTTP_404_NOT_FOUND )
 
+    # DETAIL
     if request.method == 'GET':
         serialize_data = VehicleDetailSerializer( vehicle_data )
-        print('Serialize data -',serialize_data.data)
         return Response( serialize_data.data )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@api_view( ['GET', 'PUT', 'DELETE'] )
-def Practice_update_retrieve_delete_view( request, pk ):
-
-    try:
-        practice = Practice.objects.get(id=pk)
-    except Practice.DoesNotExist:
-        return Response({'error' : {
-                'code' : 404,
-                'message' : 'Practice id not found',
-            }},  status=status.HTTP_404_NOT_FOUND )
-
-    if request.method == 'GET':
-        serializer = PracticeSerializer( practice )
-
-        return Response( serializer.data )
-
-    elif request.method == 'DELETE':
-        practice.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
+    # UPDATE 
     elif request.method == 'PUT':
-        serializer = PracticeSerializer( practice , data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response( serializer.data )
-        return Response( serializer.errors, status=status.HTTP_400_BAD_REQUEST )
+        serialize_data = VehicleDetailSerializer( vehicle_data, data=request.data )
+
+        if serialize_data.is_valid():
+            serialize_data.save()
+            return Response( serialize_data.data )
+
+        return Response( serialize_data.errors,
+                         status=status.HTTP_400_BAD_REQUEST )
+
+    # DELETE
+    elif request.method == 'DELETE':
+        try:
+            vehicle_data.delete()
+        except Exception:
+            return Response( { 
+                            'error' : {
+                              'code'    : 400,
+                              'message' : "Vehicle can't be deleted due to dependency" 
+                            }
+                         },
+                         status=status.HTTP_404_NOT_FOUND )
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
