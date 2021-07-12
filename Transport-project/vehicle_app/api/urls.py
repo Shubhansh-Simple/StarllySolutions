@@ -1,5 +1,7 @@
 from django.urls import path
-from .views      import VehicleListCreateView,VehiclePermitListView
+from .views      import VehicleListCreateView,\
+                        VehiclePermitListView,\
+                        VehicleDetailUpdateDeleteView
 
 urlpatterns = [
 

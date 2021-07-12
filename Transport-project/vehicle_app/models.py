@@ -48,6 +48,9 @@ class Vehicle( models.Model ):
     vehicle_owner     = models.ForeignKey( Client, 
                                            on_delete=models.PROTECT )
 
+    class Meta:
+        ordering = ['-registration_date']
+
     # before making any permits
     @property
     def license_status(self):

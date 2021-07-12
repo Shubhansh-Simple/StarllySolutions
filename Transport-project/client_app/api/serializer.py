@@ -3,14 +3,13 @@ from client_app.models import Client
 
 
 class ClientSerializer ( serializers.ModelSerializer ):
-    fullname           = serializers.ReadOnlyField()
-    client_detail_link = serializers.HyperlinkedIdentityField( 
+    fullname       = serializers.ReadOnlyField()
+    client_details = serializers.HyperlinkedIdentityField( 
                                                 view_name='client-detail-view',
                                                    )
-
     class Meta:
         model  = Client
-        fields = ('fullname','client_detail_link',)
+        fields = ('fullname','client_details',)
 
 class ClientDetailSerializer ( serializers.ModelSerializer ):
 

@@ -14,7 +14,6 @@ def ClientListCreateView( request ):
         serialize_data = ClientSerializer( client_data, 
                                            many=True,
                                            context={'request':request} )
-
         return Response( serialize_data.data )
 
     elif request.method == 'POST':

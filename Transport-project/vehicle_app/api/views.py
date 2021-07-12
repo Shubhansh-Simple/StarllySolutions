@@ -13,20 +13,39 @@ def VehicleListCreateView( request ):
     if request.method == 'GET':
 
         vehicle_data   = Vehicle.objects.all()
-        serialize_data = VehicleSerializer( vehicle_data, many=True )
+        serialize_data = VehicleSerializer( vehicle_data, 
+                                            many=True,
+                                            context = {'request' : request} )
 
         return Response( serialize_data.data )
+
+    elif request.method == 'POST':
+        serialize_data = VehicleSerializer( data=request.data )
+
+        print('Request data - ',request.data )
+
+        if serialize_data.is_valid():
+            print('Yes it is valid')
+            serialize_data.save()
+            return Response( serialize_data.data,
+                             status=status.HTTP_201_CREATED )
+
+        return Response( serialize_data.errors,
+                         status=status.HTTP_400_BAD_REQUEST )
 
 
 @api_view( ['GET'] )
 def VehiclePermitListView( request ):
+    '''All vehicles with their permits'''
 
     if request.method == 'GET':
         vehicle_data   = Vehicle.objects.all()
         serialize_data = VehicleSerializerWithPermits( vehicle_data, many=True )
         return Response( serialize_data.data )
 
-
+#@api_view( ['GET','PUT','DELETE'] )
+def VehicleDetailUpdateDeleteView( request,pk ):
+    pass
 
 
 

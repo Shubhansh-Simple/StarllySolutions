@@ -12,11 +12,26 @@ class PermitVehicleSerializer( serializers.ModelSerializer ):
 
 
 class VehicleSerializer ( serializers.ModelSerializer ):
-    vehicle_owner = serializers.StringRelatedField()
+    license_status   = serializers.ReadOnlyField()
+
+    # for post request
+    vehicle_owner_id = serializers.IntegerField()
+    vehicle_owner = serializers.HyperlinkedRelatedField( 
+                                                read_only=True,
+                                                view_name='client-detail-view',
+                                                   )
 
     class Meta:
         model  = Vehicle
         fields = '__all__'
+        read_only_fields = ( 'license_end',
+                             'total_permits',
+                             'vehicle_owner',
+                             'license_status' )
+        extra_kwargs = {
+            'vehicle_owner_id' : { 'write_only' : True },
+        }
+
 
 class VehicleSerializerWithPermits( serializers.ModelSerializer ):
     vehicle_owner = serializers.StringRelatedField()

@@ -2,13 +2,15 @@ from django.db import models
 
 
 class Client( models.Model ):
-    first_name   = models.CharField( max_length=15 )
-    last_name    = models.CharField( max_length=15 )
-    email        = models.EmailField()
+    first_name    = models.CharField( max_length=15 )
+    last_name     = models.CharField( max_length=15 )
+    email         = models.EmailField()
     mobile_number = models.BigIntegerField( primary_key=True, 
                                             unique=True,
                                             blank=True  
                                           )
+    #registration_date = models.DateField( auto_now_add=True )
+
     @property
     def fullname( self ):
         return self.first_name + ' ' + self.last_name
