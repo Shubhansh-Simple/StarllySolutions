@@ -15,17 +15,20 @@ class VehiclePermitSerializer( serializers.ModelSerializer ):
                    'vehicle_owner',
                    'gps_imei',
                    'vehicle_category',
-                   'vehicle_type')
-
+                   'vehicle_type' )
+        
 
 class PermitSerializer ( serializers.ModelSerializer ):
 
     # we will come back here
-    vehicle = VehiclePermitSerializer( read_only=True )
+    vehicle    = VehiclePermitSerializer( read_only=True )
+    vehicle_id = serializers.CharField( write_only=True )
 
     class Meta:
         model  = Permit
         fields = '__all__'
+
+        read_only_fields = ( 'permit_date','vehicle','id', )
 
 
 

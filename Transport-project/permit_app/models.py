@@ -8,11 +8,15 @@ class Permit( models.Model ):
                                          related_name='vechicle_permits',
                                          on_delete=models.DO_NOTHING )
 
+    # this should be used as primary key
     permit_number   = models.CharField( max_length=20, unique=True )
     loading_point   = models.CharField( max_length=20 )
     unloading_point = models.CharField( max_length=20 )
     quanity         = models.FloatField()
     permit_date     = models.DateField( auto_now_add=True )
+
+    class Meta:
+        ordering = ['-permit_date',]
 
     def save( self, *args , **kwargs ):
         '''Call methods before save'''

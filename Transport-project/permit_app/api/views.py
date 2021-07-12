@@ -16,6 +16,16 @@ def PermitListCreateView( request ):
 
         return Response( serialize_data.data )
 
+    elif request.method == 'POST':
+
+        serialize_data = PermitSerializer( data=request.data )
+        if serialize_data.is_valid():
+            serialize_data.save()
+            return Response( serialize_data.data,
+                             status=status.HTTP_201_CREATED )
+
+        return Response( serialize_data.errors,
+                         status=status.HTTP_400_BAD_REQUEST )
 
 
 
