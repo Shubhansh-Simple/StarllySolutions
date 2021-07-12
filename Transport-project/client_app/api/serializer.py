@@ -6,10 +6,18 @@ class ClientSerializer ( serializers.ModelSerializer ):
     fullname       = serializers.ReadOnlyField()
     client_details = serializers.HyperlinkedIdentityField( 
                                                 view_name='client-detail-view',
+                                                read_only=True
                                                    )
     class Meta:
         model  = Client
-        fields = ('fullname','client_details',)
+        fields = ( 'fullname',
+                   'client_details')
+
+    '''
+    def validate_mobile_number( self ):
+        pass
+        Just validate it's a 10 digit number or not.
+    '''
 
 class ClientDetailSerializer ( serializers.ModelSerializer ):
 

@@ -6,6 +6,8 @@ from .views      import VehicleListCreateView,\
 urlpatterns = [
 
     path('',         VehicleListCreateView, name='vehicle-list-create'),
+    path('<str:pk>/',VehicleDetailUpdateDeleteView, name='vehicle-detail-update-delete'),
+
     path('permits/', VehiclePermitListView, name='vehicle-permit-list'),
 ]
 

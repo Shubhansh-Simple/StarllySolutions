@@ -2,6 +2,10 @@ from rest_framework     import serializers
 from vehicle_app.models import Vehicle
 from permit_app.models  import Permit
 
+# for vehicle detail page
+from client_app.api.serializer import ClientDetailSerializer
+
+
 class PermitVehicleSerializer( serializers.ModelSerializer ):
     '''Permit serializer specially for vehicle data representation'''
 
@@ -29,8 +33,25 @@ class VehicleSerializer ( serializers.ModelSerializer ):
                              'vehicle_owner',
                              'license_status' )
 
+class VehicleDetailSerializer ( serializers.ModelSerializer ):
+    license_status   = serializers.ReadOnlyField()
+    vehicle_owner    = ClientDetailSerializer()
+
+    # for post request
+    vehicle_owner_id = serializers.IntegerField( write_only=True )
+
+    class Meta:
+        model  = Vehicle
+        fields = '__all__'
+        read_only_fields = ( 'license_end',
+                             'total_permits',
+                             'vehicle_owner',
+                             'license_status' )
+
 
 class VehicleSerializerWithPermits( serializers.ModelSerializer ):
+    '''All Vehicles with total permits number and dates list'''
+
     vehicle_owner = serializers.StringRelatedField()
     vechicle_permits = PermitVehicleSerializer( many=True )
 

@@ -1,6 +1,8 @@
 from rest_framework            import status
 from rest_framework.decorators import api_view
 from rest_framework.response   import Response
+from rest_framework.reverse    import reverse
+from django.shortcuts          import HttpResponseRedirect
 
 from client_app.models import Client
 from .serializer       import ClientSerializer, ClientDetailSerializer
@@ -14,11 +16,13 @@ def ClientListCreateView( request ):
         serialize_data = ClientSerializer( client_data, 
                                            many=True,
                                            context={'request':request} )
+
         return Response( serialize_data.data )
 
     elif request.method == 'POST':
+        
+        serializer = ClientDetailSerializer( data=request.data )
 
-        serializer = ClientSerializer( data=request.data )
 
         if serializer.is_valid():
             serializer.save()

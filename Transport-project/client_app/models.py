@@ -11,6 +11,11 @@ class Client( models.Model ):
                                           )
     #registration_date = models.DateField( auto_now_add=True )
 
+    '''
+    class Meta:
+        ordering = ['first_name','-registration_date']
+    '''
+
     @property
     def fullname( self ):
         return self.first_name + ' ' + self.last_name
