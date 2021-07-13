@@ -4,17 +4,15 @@ from django.db import models
 class Client( models.Model ):
     first_name    = models.CharField( max_length=15 )
     last_name     = models.CharField( max_length=15 )
-    email         = models.EmailField()
+    email         = models.EmailField( unique=True )
     mobile_number = models.BigIntegerField( primary_key=True, 
                                             unique=True,
                                             blank=True  
                                           )
-    #registration_date = models.DateField( auto_now_add=True )
+    registration_date = models.DateField( auto_now_add=True )
 
-    '''
     class Meta:
-        ordering = ['first_name','-registration_date']
-    '''
+        ordering = ['first_name','last_name']
 
     @property
     def fullname( self ):

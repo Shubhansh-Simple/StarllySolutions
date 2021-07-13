@@ -44,19 +44,19 @@ class Vehicle( models.Model ):
                                           max_length=30,
                                           default=INSTALLATION_TYPE[0][0] )
 
-    registration_date = models.DateField()
+    registration_date = models.DateField(auto_now_add=True)
     vehicle_owner     = models.ForeignKey( Client, 
                                            on_delete=models.PROTECT )
 
     class Meta:
-        ordering = ['-registration_date']
+        ordering = ['-vehicle_number','-registration_date']
 
     # before making any permits
     @property
     def license_status(self):
         '''Is today's date is b/w the start and end license date.'''
 
-        return self.license_start < date.today() < self.license_end
+        return self.license_start <= date.today() <= self.license_end
 
     @property
     def increase_permits(self):
@@ -67,6 +67,8 @@ class Vehicle( models.Model ):
 
         if self._state.adding: # or self.license_start changed
             self.license_end = self.license_start + relativedelta(years=1)
+
+        self.vehicle_number = self.vehicle_number.lower()
 
         super( Vehicle,self ).save( *args , **kwargs )
 

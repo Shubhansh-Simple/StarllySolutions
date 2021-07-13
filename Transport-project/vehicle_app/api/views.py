@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response   import Response
 
 from vehicle_app.models import Vehicle
+from client_app.models  import Client
 from .serializer        import VehicleSerializer,\
                                VehicleSerializerWithPermits,\
                                VehicleDetailSerializer
@@ -37,10 +38,26 @@ def VehicleListCreateView( request ):
         return Response( serialize_data.data )
 
     elif request.method == 'POST':
-        serialize_data = VehicleSerializer( data=request.data )
+        serialize_data = VehicleDetailSerializer( data=request.data )
 
         if serialize_data.is_valid():
+            #Check owner exist or not
+
+            vehicle_owner_id = serialize_data.validated_data.get('vehicle_owner_id')
+
+            try:
+                Client.objects.get(mobile_number=vehicle_owner_id)
+            except Client.DoesNotExist:
+                return Response( { 
+                            'error' : {
+                              'code'    : 400,
+                              'message' : 'Client does not exist.' 
+                            }
+                         },
+                         status=status.HTTP_400_BAD_REQUEST )
+
             serialize_data.save()
+
             return Response( serialize_data.data,
                              status=status.HTTP_201_CREATED )
 
@@ -83,17 +100,7 @@ def VehicleDetailUpdateDeleteView( request,pk ):
 
     # DELETE
     elif request.method == 'DELETE':
-        try:
-            vehicle_data.delete()
-        except Exception:
-            return Response( { 
-                            'error' : {
-                              'code'    : 400,
-                              'message' : "Vehicle can't be deleted due to dependency" 
-                            }
-                         },
-                         status=status.HTTP_404_NOT_FOUND )
-
+        vehicle_data.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

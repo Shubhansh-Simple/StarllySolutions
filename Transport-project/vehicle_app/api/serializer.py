@@ -22,16 +22,14 @@ class VehicleSerializer ( serializers.ModelSerializer ):
         model  = Vehicle
         fields = '__all__'
         read_only_fields = ( 'license_end',
-                             'total_permits',
-                             'vehicle_owner',
-                             'license_status' )
+                             'total_permits' )
 
 
 ######################
 # /vehicle/<int:pk>/ #
 ######################
 class VehicleDetailSerializer ( serializers.ModelSerializer ):
-    license_status   = serializers.ReadOnlyField()
+    license_status   = serializers.BooleanField( read_only=True )
     vehicle_owner    = ClientDetailSerializer( read_only=True )
 
     # for post request

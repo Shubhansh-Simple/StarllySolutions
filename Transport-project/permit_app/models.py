@@ -9,11 +9,14 @@ class Permit( models.Model ):
                                          on_delete=models.DO_NOTHING )
 
     # this should be used as primary key
-    permit_number   = models.CharField( max_length=20, unique=True )
+    permit_number   = models.CharField( max_length=20, 
+                                        unique=True,
+                                        primary_key=True )
+
     loading_point   = models.CharField( max_length=20 )
     unloading_point = models.CharField( max_length=20 )
     quanity         = models.FloatField()
-    permit_date     = models.DateField( auto_now_add=True )
+    permit_date     = models.DateTimeField( auto_now_add=True )
 
     class Meta:
         ordering = ['-permit_date',]
