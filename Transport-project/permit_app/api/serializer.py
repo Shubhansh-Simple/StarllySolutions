@@ -18,9 +18,11 @@ class VehiclePermitSerializer( serializers.ModelSerializer ):
                    'vehicle_type' )
         
 
-class PermitSerializer ( serializers.ModelSerializer ):
+############      #####################
+# /permit/ # BOTH # /permit/<str:pk>/ #
+############      #####################
+class PermitSerializer( serializers.ModelSerializer ):
 
-    # we will come back here
     vehicle    = VehiclePermitSerializer( read_only=True )
     vehicle_id = serializers.CharField( write_only=True )
 
@@ -28,9 +30,7 @@ class PermitSerializer ( serializers.ModelSerializer ):
         model  = Permit
         fields = '__all__'
 
-        read_only_fields = ( 'permit_date','vehicle','id', )
-
-
+        read_only_fields = ( 'permit_date','id' )
 
 
 
