@@ -44,7 +44,7 @@ class Vehicle( models.Model ):
                                           max_length=30,
                                           default=INSTALLATION_TYPE[0][0] )
 
-    registration_date = models.DateField(auto_now_add=True)
+    registration_date = models.DateField()
     vehicle_owner     = models.ForeignKey( Client, 
                                            on_delete=models.PROTECT )
 

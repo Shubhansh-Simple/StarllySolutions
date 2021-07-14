@@ -63,5 +63,3 @@ class VehicleSerializerWithPermits( serializers.ModelSerializer ):
         fields = '__all__'
 
 
-
-

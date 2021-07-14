@@ -2,11 +2,19 @@ from rest_framework            import status
 from rest_framework.decorators import api_view
 from rest_framework.response   import Response
 
+# model
 from vehicle_app.models import Vehicle
 from client_app.models  import Client
+
+# serializer
 from .serializer        import VehicleSerializer,\
                                VehicleSerializerWithPermits,\
                                VehicleDetailSerializer
+# FOR CSV
+import csv
+from django.http               import HttpResponse
+from django.db.models          import Count
+
 
 #####################
 # /vehicle/permits/ #
@@ -103,6 +111,37 @@ def VehicleDetailUpdateDeleteView( request,pk ):
         vehicle_data.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+
+#################
+# /vehicle/csv/ #
+#################
+
+@api_view( ['GET'] )
+def VehicleRegisteredPerMonth(request):
+    if request.method == 'GET':
+        
+        response = HttpResponse( content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="first.csv"'
+
+        vehicle_data   = Vehicle.objects.values(
+                                'registration_date__month',
+                                'installation_type'
+                            ).annotate(
+                                    total_registration=Count('vehicle_number')
+                                ).order_by('registration_date__month')
+
+        header = [ 'total_registration',
+                   'registration_date__month',
+                   'installation_type' ]
+
+        writer = csv.DictWriter(response, fieldnames=header)
+        writer.writeheader()
+
+        for x in vehicle_data:
+            writer.writerow(x)
+
+        return response
 
 
 
