@@ -7,6 +7,7 @@ name = "pypi"
 django = "==2.2"
 djangorestframework = "*"
 python-dateutil = "*"
+django-rest-auth = "*"
 
 [dev-packages]
 
